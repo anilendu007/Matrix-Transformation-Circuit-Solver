@@ -13,29 +13,17 @@ A clean, library-free engine that models multi-loop electrical circuits as linea
 
 This system utilizes Kirchhoff's Voltage Law (KVL) to represent complex multi-loop circuit networks into clean matrix structures:
 
+$$R \cdot I = V$$
+
 $$
-\begin{bmatrix} 
-R_{11} & R_{12} & R_{13} \\ 
-R_{21} & R_{22} & R_{23} \\ 
-R_{31} & R_{32} & R_{33} 
-\end{bmatrix} 
-\begin{bmatrix} 
-I_1 \\ 
-I_2 \\ 
-I_3 
-\end{bmatrix} 
-= 
-\begin{bmatrix} 
-V_1 \\ 
-V_2 \\ 
-V_3 
-\end{bmatrix}
+\begin{bmatrix} R_{11} & R_{12} & R_{13} \\ R_{21} & R_{22} & R_{23} \\ R_{31} & R_{32} & R_{33} \end{bmatrix} \begin{bmatrix} I_1 \\ I_2 \\ I_3 \end{bmatrix} = \begin{bmatrix} V_1 \\ V_2 \\ V_3 \end{bmatrix}
 $$
 
 Where:
 * $R$ = Matrix of interconnected loop resistances (Ohms)
 * $I$ = Vector of unknown target mesh currents to isolate (Amperes)
 * $V$ = Vector of fixed loop source voltage potentials (Volts)
+
 
 
 ## 💻 Sample Output
