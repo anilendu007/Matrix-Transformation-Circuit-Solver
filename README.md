@@ -1,49 +1,24 @@
+# Linear Algebra Engine & Multi-Loop Circuit Solver
 
-# Matrix Transformation & Circuit Solver
+A library-free, performance-optimized C++ engine that models complex physical networks as simultaneous linear systems ($Ax = b$) and solves them via Gaussian Elimination with Partial Pivoting.
 
-A clean, library-free engine that models multi-loop electrical circuits as linear systems and solves for currents using a custom **Gaussian Elimination** algorithm.
+## Engineering Architecture
+- `include/matrix_solver.hpp` & `src/matrix_solver.cpp`: Implements a specialized matrix solver designed for row-major cache locality, featuring partial pivoting to mitigate floating-point truncation errors.
+- `include/circuit.hpp` & `src/circuit.cpp`: Maps physical system dynamics (Kirchhoff's Voltage Law) directly into bounded matrix layouts.
+- `src/main.cpp`: Entry execution program building and tracking an arbitrarily structured multi-loop mesh topology.
+- `CMakeLists.txt`: Build-system automation applying strict optimization flags (`-O3`) to achieve minimal pipeline latency.
 
-## 🚀 Key Features
-* **Zero Dependencies:** Written purely from scratch using 2D arrays.
-* **Mesh Analysis Engine:** Converts circuit loop equations directly into (R*I = V) matrices.
-* **Custom Row Reduction:** Implements O(n³) forward elimination and back substitution.
-* **Edge-Case Safety:** Built-in checks to prevent division-by-zero errors during matrix pivots.
+## Algorithmic & Hardware Optimization Details
+1. **Numerical Stability**: Standard Gaussian Elimination suffers from precision failure if a diagonal element is close to zero. This engine implements **Partial Pivoting**, tracking down column values to swap the optimal absolute-weight row dynamically.
+2. **Memory Alignment & Cache Utilization**: Matrix traversals inside inner computational loops are organized along structural row dimensions matching standard C++ row-major packing. This minimizes cache eviction overhead.
+3. **Zero Deep-Copy Overhead**: Large tracking fields are transferred down operational chains natively utilizing either `const` references or explicit rvalue moving semantics (`std::move`).
 
-## How It Works
+## Building the Executable
+Compile using standard tools supporting **C++17** and **CMake**:
 
-This system utilizes Kirchhoff's Voltage Law (KVL) to represent complex multi-loop circuit networks into clean matrix structures:
-
-$$R \cdot I = V$$
-
-$$
-\begin{bmatrix} R_{11} & R_{12} & R_{13} \\ R_{21} & R_{22} & R_{23} \\ R_{31} & R_{32} & R_{33} \end{bmatrix} \begin{bmatrix} I_1 \\ I_2 \\ I_3 \end{bmatrix} = \begin{bmatrix} V_1 \\ V_2 \\ V_3 \end{bmatrix}
-$$
-
-Where:
-* $R$ = Matrix of interconnected loop resistances (Ohms)
-* $I$ = Vector of unknown target mesh currents to isolate (Amperes)
-* $V$ = Vector of fixed loop source voltage potentials (Volts)
-
-
-
-## 💻 Sample Output
-```text
-Input Matrix [R | V]:
-[  10.0  -2.0  -4.0 |  12.0 ]
-[  -2.0   8.0  -1.0 |   0.0 ]
-[  -4.0  -1.0   6.0 |  -6.0 ]
-
-Solving...
-
-Results:
-Loop 1 Current (I1) =  1.34 A
-Loop 2 Current (I2) =  0.45 A
-Loop 3 Current (I3) = -0.03 A
+```bash
+mkdir build && cd build
+cmake -DCMAKE_BUILD_TYPE=Release ..
+cmake --build .
+./circuit_solver
 ```
-
-## 🛠️ Tech Stack
-* **Language:** C / C++
-* **Concepts:** 2D Arrays, Multidimensional Pointers, Linear Algebra
-
----
-**Author:** Riya Tiwari (1st Sem ECE Student)
