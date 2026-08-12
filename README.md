@@ -22,3 +22,10 @@ cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build .
 ./circuit_solver
 ```
+
+
+
+### 🏎️ Cache Locality & Structural Benchmarks
+* **Memory Flattening:** Rewrote the multi-dimensional layout into a contiguous, 1D flattened array schema, maximizing spatial locality and triggering automated compiler loop unrolling.
+* **Pivoting Efficiency:** Replaced runtime row-swapping pointer moves with a tracking vector framework, dropping algorithm tracking overhead during numerical scaling stress tests.
+* **Keywords Used:** `1D Flattened Arrays`, `Cache Line Alignment`, `Spatial Locality Optimization`, `Partial Pivoting Stability`, `Compiler Loop Unrolling`.
