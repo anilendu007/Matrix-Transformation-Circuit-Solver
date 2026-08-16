@@ -2,6 +2,15 @@
 
 A library-free, performance-optimized C++ engine that models complex physical networks as simultaneous linear systems ($Ax = b$) and solves them via Gaussian Elimination with Partial Pivoting.
 
+## Low-Latency Optimization Performance
+
+Originally, this engine utilized nested vectors (`std::vector<std::vector<double>>`) to hold matrix layouts. Nested layouts create an array of fragmented pointers across the heap, and trigger CPU cache invalidation during rapid elimination sweeps.
+To achieve this maximum execution performance, the codebase was refactored to use a **Contiguous 1D Flattened Array Schema**.
+
+* **Memory Contiguity:** The matrix is allocated as a single sequential block of memory: `std::vector<double>(n * n)`.
+* **Row-Major Layout:** Indices are resolved manually using inline coordinate arithmetic: `index = row * n + col`.
+* **Hardware Alignment:** Linear data access bounds allows the CPU to prefetch consecutive values perfectly inside 64-bytes L1 cache lines, entirely eliminating pointer-chasing and maximizing instruction pipeline speeds. 
+
 ## Engineering Architecture
 - `include/matrix_solver.hpp` & `src/matrix_solver.cpp`: Implements a specialized matrix solver designed for row-major cache locality, featuring partial pivoting to mitigate floating-point truncation errors.
 - `include/circuit.hpp` & `src/circuit.cpp`: Maps physical system dynamics (Kirchhoff's Voltage Law) directly into bounded matrix layouts.
