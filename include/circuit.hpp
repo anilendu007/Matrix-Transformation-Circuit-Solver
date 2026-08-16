@@ -20,7 +20,7 @@ public:
 
 private:
     size_t num_loops_;
-    std::vector<std::vector<double>> resistance_matrix_;
+    std::vector<double> resistance_matrix_;
     std::vector<double> voltage_vector_;
 };
 
